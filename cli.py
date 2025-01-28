@@ -9,7 +9,7 @@ def transcribe(rawCSV):
     return transcript
 
 
-with open(sys.argv[1]) as my_file:
+with open(sys.argv[1], encoding='utf8') as my_file:
     print(transcribe(my_file))
 
 
