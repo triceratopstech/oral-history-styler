@@ -8,7 +8,12 @@ def transcribe(rawCSV):
         transcript=transcript + ' ' + row[2] + ','
     return transcript
 
+def openUTF8(filename):
+    with open(filename, encoding='utf8') as my_file:
+        return(transcribe(my_file))
 
+
+#this is still executable on its own with a csv file as an argument
 with open(sys.argv[1], encoding='utf8') as my_file:
     print(transcribe(my_file))
 
