@@ -14,7 +14,8 @@ def openUTF8(filename):
 
 
 #this is still executable on its own with a csv file as an argument
-with open(sys.argv[1], encoding='utf8') as my_file:
-    print(transcribe(my_file))
+if __name__ == "__main__":
+    with open(sys.argv[1], encoding='utf8') as my_file:
+        print(transcribe(my_file))
 
 
