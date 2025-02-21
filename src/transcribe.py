@@ -1,5 +1,6 @@
 import csv
 import sys
+import docx
 
 def transcribe(rawCSV):
     transcript = "transcript: "
@@ -12,6 +13,10 @@ def openUTF8(filename):
     with open(filename, encoding='utf8') as my_file:
         return(transcribe(my_file))
 
+def makedocx(content):
+    doc = docx.Document()
+    doc.add_paragraph(content)
+    return doc
 
 #this is still executable on its own with a csv file as an argument
 if __name__ == "__main__":

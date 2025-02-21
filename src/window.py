@@ -1,6 +1,9 @@
 import tkinter as tk
+import docx
 from tkinter import filedialog
 from transcribe import openUTF8
+from transcribe import makedocx
+
 
 class Window:
 
@@ -19,9 +22,10 @@ class Window:
     def transcribeCallBack(self):
         self.root.filename =  filedialog.askopenfilename(initialdir = "./",title = "Select file",filetypes = (("csv files","*.csv"),("all files","*.*")))
         content = openUTF8(self.root.filename)
+        doc = makedocx(content)
+        
         name = "exampleTranscript" # TODO: save as
-        with open(name + ".txt", "w") as f: # create the new file to write
-            f.write(content);
+        doc.save(name + ".docx")
 
 
 
