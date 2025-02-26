@@ -3,8 +3,8 @@ import sys
 import docx
 
 def transcribe(rawCSV):
-    transcript = "transcript: "
     csvreader = csv.reader(rawCSV)
+    transcript = str() #start a string to append to
     for row in csvreader:
         transcript=transcript + ' ' + row[2] + ','
     return transcript
