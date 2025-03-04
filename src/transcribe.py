@@ -6,7 +6,10 @@ def transcribe(rawCSV):
     csvreader = csv.reader(rawCSV)
     transcript = str() #start a string to append to
     for row in csvreader:
-        transcript=transcript + ' ' + row[2] + ','
+        try:
+            transcript=transcript + ' ' + row[2]
+        except IndexError:
+            print("row has no valid text")
     return transcript
 
 def openUTF8(filename):
