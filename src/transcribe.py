@@ -1,15 +1,45 @@
 import csv
 import sys
 import docx
+import re
+from datetime import time
 
 def transcribe(rawCSV):
+
+    #configure this to adjust timestamps.
+    #Smithsonian oral history spec is 5 minutes
+    timestampInterval = 5 #in minutes
+
+
     csvreader = csv.reader(rawCSV)
     transcript = str() #start a string to append to
+    next(csvreader) #assume first line is just headers and ignore
+    nextTimestampMinute = timestampInterval
+    speaker_name = re.compile("[A-Z, ]+:")
+
+
     for row in csvreader:
+        nextEntry = str()
         try:
-            transcript=transcript + ' ' + row[2]
-        except IndexError:
-            print("row has no valid text")
+            #is it time to set a timestamp?
+            currentTimestamp = time.fromisoformat(row[0])
+
+            if(currentTimestamp.minute >= nextTimestampMinute): 
+                nextEntry = nextEntry + "\n\n["+currentTimestamp.isoformat("seconds")+"]"
+                nextTimestampMinute = (nextTimestampMinute+timestampInterval)%60
+                if(not speaker_name.match(row[2])):
+                    nextEntry = nextEntry + "\n\n"
+            for line in row[2].splitlines():
+                if(speaker_name.match(line)):
+                    nextEntry = nextEntry + "\n\n" + line + ' '
+                else:
+                    nextEntry = nextEntry + line + ' '
+
+            transcript = transcript+nextEntry
+    
+        except Exception as e:
+            print("skipping row with malformed text: " + ','.join(row) + '\n', e)
+
     return transcript
 
 def openUTF8(filename):

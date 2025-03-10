@@ -1,0 +1,7 @@
+Start Time,End Time,Text,Layer ID
+
+00:00:00:00,,unicode characters that cause problems:
+00:00:00:00,, — Em Dash,
+00:00:00:00,, “ Open quotations,
+00:00:00:00,, “ Closed quotation,
+00:00:00:00,, ‘ Apostrophe,
