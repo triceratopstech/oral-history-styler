@@ -2,13 +2,16 @@ import tkinter as tk
 from tkinter import filedialog
 from transcribe import openUTF8
 from transcribe import makedocx
+import wx
 
 
 class Window:
 
     def __init__(self): 
         self.root = tk.Tk()
-        instructions = tk.Label(self.root, wraplength=400, text = '\n\nPress the button to choose a file.  A new file called exampleTranscript.txt will be generated with the transcribed text\n\n')
+        self.root.title("Sky Bear Transcriber")
+        
+        instructions = tk.Label(self.root, wraplength=400, text = '\n\nPress the button to choose a csv file.  Then choose a location to save your formatted transcript to. \n\n')
         instructions.pack()
 
         B = tk.Button(self.root, text ="Transcribe a File", command = self.transcribeCallBack)
@@ -30,6 +33,13 @@ class Window:
         content = openUTF8(rawfile)
         doc = makedocx(content)
         doc.save(newfile.name)
+
+        top= tk.Toplevel(self.root)
+        top.geometry("250x100")
+        top.title("Sky Bear Transcriber")
+        tk.Label(top, text= "Transcript created!").pack()
+
+
 
 
 
