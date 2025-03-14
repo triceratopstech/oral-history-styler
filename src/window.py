@@ -23,7 +23,7 @@ class Window:
 
     def transcribeCallBack(self):
         rawfile =  filedialog.askopenfilename(initialdir = "./",title = "Select file",filetypes = (("csv files","*.csv"),("all files","*.*")))
-        if rawfile is None:  # open file cancelled so nothing else to do
+        if rawfile == "":  # open file cancelled so nothing else to do
             return
 
         newfile = filedialog.asksaveasfile(defaultextension=".docx", filetypes=(("word files","*.docx"),))
