@@ -22,7 +22,7 @@ def transcribe(rawCSV):
         nextEntry = str()
         try:
             #is it time to set a timestamp?
-            timeString = row[0]
+            timeString = row[0][0:8]
             timeString = timeString.replace(";",":")
             currentTimestamp = time.fromisoformat(timeString)
 

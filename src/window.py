@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import filedialog
 from transcribe import openUTF8
 from transcribe import makedocx
-import wx
 
 
 class Window:
