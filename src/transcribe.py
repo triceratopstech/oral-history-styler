@@ -2,18 +2,19 @@ import csv
 import sys
 import docx
 import re
-from datetime import time
+from datetime import timedelta
 
 def transcribe(rawCSV):
 
     #configure this to adjust timestamps.
     #Smithsonian oral history spec is 5 minutes
-    timestampInterval = 5 #in minutes
+    timestampIntervalMinutes = 5 #in minutes
 
 
     csvreader = csv.reader(rawCSV)
     transcript = str() #start a string to append to
     next(csvreader) #assume first line is just headers and ignore
+    timestampInterval = timedelta(minutes=timestampIntervalMinutes)
     nextTimestampMinute = timestampInterval
     speaker_name = re.compile("[A-Z, ]+:")
 
@@ -22,11 +23,13 @@ def transcribe(rawCSV):
         nextEntry = str()
         try:
             #is it time to set a timestamp?
-            currentTimestamp = time.fromisoformat(row[0])
+            timeString = row[0][0:8]
+            timeString = timeString.replace(";",":")
+            currentTimestamp = convert_to_timedelta(timeString)
 
-            if(currentTimestamp.minute >= nextTimestampMinute): 
-                nextEntry = nextEntry + "\n\n["+currentTimestamp.isoformat("seconds")+"]"
-                nextTimestampMinute = (nextTimestampMinute+timestampInterval)%60
+            if(currentTimestamp >= nextTimestampMinute): 
+                nextEntry = nextEntry + "\n\n["+str(currentTimestamp)+"]"
+                nextTimestampMinute = nextTimestampMinute+timestampInterval
                 if(not speaker_name.match(row[2])):
                     nextEntry = nextEntry + "\n\n"
             for line in row[2].splitlines():
@@ -50,6 +53,16 @@ def makedocx(content):
     doc = docx.Document()
     doc.add_paragraph(content)
     return doc
+
+def convert_to_timedelta(total_time):
+    hours = 0
+    minutes = 0
+    seconds = 0
+
+    hours, minutes, seconds = map(float, total_time.split(':'))
+    timedelta(hours=hours, minutes=minutes, seconds=seconds)
+
+    return timedelta(hours=hours, minutes=minutes, seconds=seconds)
 
 #this is still executable on its own with a csv file as an argument
 if __name__ == "__main__":
