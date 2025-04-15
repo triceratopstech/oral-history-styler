@@ -1,6 +1,7 @@
 import csv
 import sys
 import docx
+from docx.enum.text import WD_COLOR_INDEX
 import re
 from datetime import timedelta
 
@@ -51,8 +52,32 @@ def openUTF8(filename):
 
 def makedocx(content):
     doc = docx.Document()
+    doc = add_begining(doc)
     doc.add_paragraph(content)
+    doc = add_ending(doc)
     return doc
+
+def add_ending(doc):
+    ending_content = "[END OF INTERVIEW.]"
+    doc.add_paragraph(ending_content)
+    return doc
+
+def add_begining(doc):
+    headings = "Transcript\n\nPreface\n\n"
+    heading_run = doc.add_paragraph().add_run(headings)
+    heading_run.bold = True
+
+    highlights = ["Interview Name", "Interview Date", "Interview Location", "Interviewee Name and Interviewer Name"]
+
+    intro_paragraph = doc.add_paragraph()
+    intro_paragraph.add_run("The following oral history transcript is the result of a recorded interview with ")
+
+    highlight1 = intro_paragraph.add_run("Interview Name")
+    highlight1.font.highlight_color = WD_COLOR_INDEX.YELLOW  #Word Doc color index, enum from MSFT.  Yellow is currently 7
+
+    return doc
+
+
 
 def convert_to_timedelta(total_time):
     hours = 0
