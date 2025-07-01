@@ -18,7 +18,7 @@ def transcribe(rawCSV):
     next(csvreader) #assume first line is just headers and ignore
     timestampInterval = timedelta(minutes=timestampIntervalMinutes)
     nextTimestampMinute = timestampInterval
-    speaker_name = re.compile(r"[\s\S]", re.UNICODE)
+    speaker_name = re.compile(r"^[A-Za-z\-\"']+$")
 
 
     for row in csvreader:
